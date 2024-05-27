@@ -10,7 +10,6 @@ public class Rating implements Comparable<Rating> {
         item = anItem;
         value = aValue;
     }
-
     public String getItem () {
         return item;
     }
