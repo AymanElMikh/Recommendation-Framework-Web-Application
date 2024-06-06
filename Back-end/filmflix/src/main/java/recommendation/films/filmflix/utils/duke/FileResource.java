@@ -16,96 +16,23 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 
 
-/**
- * The <code>FileResource</code> class represents a file and allows access to its contents a line at
- * a time, using the method <code>lines</code>, or a word at a time, using the method
- * <code>words</code>. These strings can then be iterated over using a <code>for</code> loop.
- * 
- * <P>
- * Example usage:
- * 
- * <PRE>
- * FileResource fr = new FileResource();
- * for (String s : fr.words()) {
- *     // print or process s
- * }
- * </PRE>
- *
- * <P>
- * If each line of the file represents separated data values, because its a CSV file, then the user
- * can get a <code>getCSVParser</code> object to access that data more directly, using one of the
- * <code>getCSVParser</code> methods.
- *
- * <P>
- * Example CSV usage:
- * 
- * <PRE>
- * FileResource fr = new FileResource("food.csv");
- * for (CSVRecord record : fr.getCSVParser()) {
- *     // print or process fields in record
- *     String name = record.get("Name");
- *     // other processing
- * }
- * </PRE>
- * 
- * <P>
- * This software is licensed with an Apache 2 license, see
- * http://www.apache.org/licenses/LICENSE-2.0 for details.
- * 
- * @author Duke Software Team
- */
 public class FileResource {
     private String myPath;
     private String mySource;
     private File mySaveFile;
 
-    /**
-     * Create a <code>FileResource</code> object that opens the file chosen by the user using a file
-     * selection dialog box.
-     * 
-     * @throws exception if no file is selected by the user
-     */
     public FileResource () {
         initRead();
     }
 
-    /**
-     * Create a <code>FileResource</code> object that opens a file represented by the File object
-     * passed as a parameter.
-     * 
-     * Useful, for example, when used in conjunction with the <code>DirectoryResource</code> class.
-     * 
-     * @param file the file to be represented by this resource
-     * @throws exception if the file cannot be accessed
-     */
+
     public FileResource (File file) {
         initRead(file);
     }
-
-    /**
-     * Create a <code>FileResource</code> object that opens a file whose name is passed as a
-     * parameter.
-     * 
-     * The named file should be on the current class path to be found.
-     * 
-     * @param filename the name of the file to be opened
-     * @throws exception if the filename cannot be accessed
-     */
     public FileResource (String filename) {
         initRead(filename);
     }
 
-    /**
-     * Create a <code>FileResource</code> object that opens the file chosen by the user using a file
-     * selection dialog box, possibly to write to it.
-     * 
-     * If the user wants to change the contents of the open file by using the method
-     * <code>write</code> to add new strings to it, pass <code>true</code> as the second parameter.
-     * Otherwise it is assumed the user will only iterate over the existing contents of the file.
-     * 
-     * @param writable allow changes to this file only if true
-     * @throws exception if no file is selected by the user
-     */
     public FileResource (boolean writable) {
         if (writable) {
             initWrite();
@@ -115,20 +42,6 @@ public class FileResource {
         }
     }
 
-    /**
-     * Create a <code>FileResource</code> object that opens a file represented by the File object
-     * passed as a parameter, possibly to write to it.
-     * 
-     * If the user wants to change the contents of the open file by using the method
-     * <code>write</code> to add new strings to it, pass <code>true</code> as the second parameter.
-     * Otherwise it is assumed the user will only iterate over the existing contents of the file.
-     * 
-     * Useful, for example, when used in conjunction with the <code>DirectoryResource</code> class.
-     * 
-     * @param file the file to be represented by this resource
-     * @param writable allow changes to this file only if true
-     * @throws exception if the file cannot be accessed
-     */
     public FileResource (File file, boolean writable) {
         if (writable) {
             initWrite(file);
@@ -138,20 +51,7 @@ public class FileResource {
         }
     }
 
-    /**
-     * Create a <code>FileResource</code> object that opens a file whose name is passed as a
-     * parameter, possibly to write to it.
-     * 
-     * If the user wants to change the contents of the open file by using the method
-     * <code>write</code> to add new strings to it, pass <code>true</code> as the second parameter.
-     * Otherwise it is assumed the user will only iterate over the existing contents of the file.
-     * 
-     * The named file should be on the current class path to be found.
-     * 
-     * @param filename the name of the file to be opened
-     * @param writable allow changes to this file only if true
-     * @throws exception if the filename cannot be accessed
-     */
+
     public FileResource (String filename, boolean writable) {
         if (writable) {
             initWrite(filename);
@@ -161,81 +61,26 @@ public class FileResource {
         }
     }
 
-    /**
-     * Allow access to this opened file one line at a time.
-     * 
-     * @return an <code>Iterable</code> that will allow access to contents of opened file one line
-     *         at a time.
-     */
     public Iterable<String> lines () {
         return new TextIterable(mySource, "\\n");
     }
 
-    /**
-     * Allow access to this opened file one word at a time, where words are separated by
-     * white-space. This means any form of spaces, like tabs or newlines, can delimit words.
-     * 
-     * @return an <code>Iterable</code> that will allow access to contents of opened file one word
-     *         at a time.
-     */
     public Iterable<String> words () {
         return new TextIterable(mySource, "\\s+");
     }
 
-    /**
-     * Return entire contents of this opened file as one string.
-     * 
-     * @return a <code>String</code> that is the contents of the open file
-     */
     public String asString () {
         return mySource;
     }
-
-    /**
-     * Returns a <code>CSVParser</code> object to access the contents of an open file.
-     * 
-     * Each line of the file should be formatted as data separated by commas and with a header row
-     * to describe the column names.
-     * 
-     * @return a <code>CSVParser</code> that can provide access to the records in the file one at a
-     *         time
-     * @throws exception if this file does not represent a CSV formatted data
-     */
     public CSVParser getCSVParser () {
         return getCSVParser(true);
     }
 
-    /**
-     * Returns a <code>CSVParser</code> object to access the contents of an open file, possibly
-     * without a header row.
-     * 
-     * Each line of the file should be formatted as data separated by commas and with/without a
-     * header row to describe the column names.
-     * 
-     * @param withHeader uses first row of data as a header row only if true
-     * @return a <code>CSVParser</code> that can provide access to the records in the file one at a
-     *         time
-     * @throws exception if this file does not represent a CSV formatted data
-     */
+
     public CSVParser getCSVParser (boolean withHeader) {
         return getCSVParser(withHeader, ",");
     }
 
-    /**
-     * Returns a <code>CSVParser</code> object to access the contents of an open file, possibly
-     * without a header row and a different data delimiter than a comma.
-     * 
-     * Each line of the file should be formatted as data separated by the delimiter passed as a
-     * parameter and with/without a header row to describe the column names. This is useful if the
-     * data is separated by some character other than a comma.
-     * 
-     * @param withHeader uses first row of data as a header row only if true
-     * @param delimiter a single character that separates one field of data from another
-     * @return a <code>CSVParser</code> that can provide access to the records in the file one at a
-     *         time
-     * @throws exception if this file does not represent a CSV formatted data
-     * @throws exception if <code>delimiter.length() != 1</code>
-     */
     public CSVParser getCSVParser (boolean withHeader, String delimiter) {
         if (delimiter == null || delimiter.length() != 1) {
             throw new ResourceException("FileResource: CSV delimiter must be a single character: " + delimiter);
@@ -255,23 +100,9 @@ public class FileResource {
         }
     }
 
-    /**
-     * Allows access to the column names of the header row of a CSV file (the first line in the
-     * file) one at a time. If the CSV file did not have a header row, then an empty
-     * <code>Iterator</code> is returned.
-     * 
-     * @param parser the <code>CSVParser</code> that has been created for this file
-     * @return an <code>Iterable</code> that allows access one header name at a time
-     */
     public Iterable<String> getCSVHeaders (CSVParser parser) {
         return parser.getHeaderMap().keySet();
     }
-
-    /**
-     * Writes a string to the end of this file.
-     * 
-     * @param s the string to saved to the file
-     */
     public void write (String s) {
         ArrayList<String> list = new ArrayList<>();
         list.add(s);
@@ -288,21 +119,12 @@ public class FileResource {
         write((ArrayList<String>)(list.data()));
     }
 
-    /**
-     * Writes a list of strings to the end of this file, one element per line.
-     * 
-     * @param list the strings to saved to the file
-     */
     public void write (String[] list) {
         // BUGBUG: yuck :(
         write(new ArrayList<String>(Arrays.asList(list)));
     }
 
-    /**
-     * Writes a list of strings to the end of this file, one element per line.
-     * 
-     * @param list the strings to saved to the file
-     */
+
     public void write (ArrayList<String> list) {
         if (mySaveFile != null) {
             // build string to save
@@ -345,17 +167,27 @@ public class FileResource {
     }
 
     // Create from the name of a File
-    private void initRead (String fname) {
+    private void initRead(String filePathOrURL) {
         try {
-            myPath = fname;
-            InputStream is = getClass().getClassLoader().getResourceAsStream(fname);
-            if (is == null) {
-                is = new FileInputStream(fname);
+            // Update the myPath variable to hold the file path or URL
+            myPath = filePathOrURL;
+
+            InputStream is;
+            // Check if the provided filePathOrURL is a URL or a local file path
+            if (filePathOrURL.startsWith("http://") || filePathOrURL.startsWith("https://")) {
+                // If it's a URL, open an input stream from the URL
+                URL url = new URL(filePathOrURL);
+                is = url.openStream();
+            } else {
+                // If it's a local file path, open an input stream from the file
+                is = new FileInputStream(filePathOrURL);
             }
+
+            // Read the contents of the file or URL into mySource
             mySource = initFromStream(is);
-        }
-        catch (Exception e) {
-            throw new ResourceException("FileResource: cannot access " + fname);
+        } catch (Exception e) {
+            // Handle any exceptions by throwing a ResourceException
+            throw new ResourceException("FileResource: cannot access " + filePathOrURL, e);
         }
     }
 

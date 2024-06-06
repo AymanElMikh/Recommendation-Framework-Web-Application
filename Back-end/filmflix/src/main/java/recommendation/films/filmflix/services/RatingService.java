@@ -1,12 +1,10 @@
 package recommendation.films.filmflix.services;
 
-import jakarta.servlet.http.HttpSession;
 import recommendation.films.filmflix.dto.RateDTO;
 import recommendation.films.filmflix.dto.RatedMovieDTO;
 import recommendation.films.filmflix.filters.Filter;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 public interface RatingService {

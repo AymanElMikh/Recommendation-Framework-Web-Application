@@ -1,11 +1,15 @@
 package recommendation.films.filmflix.filters;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import recommendation.films.filmflix.models.Movie;
 
 public class YearAfterFilter implements  Filter{
     private int myYear;
-    public YearAfterFilter(int year) {
-        myYear = year;
+    @JsonCreator
+    public YearAfterFilter(@JsonProperty("year") int year) {
+        this.myYear = year;
     }
+
     @Override
     public boolean satisfies(Object object) {
         boolean response = false;

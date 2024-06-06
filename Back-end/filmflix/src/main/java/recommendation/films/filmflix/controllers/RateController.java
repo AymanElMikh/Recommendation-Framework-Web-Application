@@ -1,5 +1,4 @@
 package recommendation.films.filmflix.controllers;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +11,8 @@ import recommendation.films.filmflix.dto.FilterDTOConverter;
 import recommendation.films.filmflix.dto.RateDTO;
 import recommendation.films.filmflix.filters.AllFilters;
 import recommendation.films.filmflix.services.RatingService;
+
+import javax.servlet.http.HttpSession;
 
 @RestController
 public class RateController {
@@ -33,7 +34,7 @@ public class RateController {
     public ResponseEntity<Object> getRatedMovies(HttpSession session) {
         String id = (String) session.getAttribute("raterId");
         if (id != null && !id.isEmpty()) {
-            AllFilters filterCriteria = FilterDTOConverter.toAllFilters((FilterDTO) session.getAttribute("FilterDTO"));
+            AllFilters filterCriteria = FilterDTOConverter.toAllFilters((FilterDTO) session.getAttribute("filterDTO"));
             return ResponseEntity.ok(ratingService.getSimilarRatingsByFilter(id, filterCriteria));
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No id information is stored about any user");

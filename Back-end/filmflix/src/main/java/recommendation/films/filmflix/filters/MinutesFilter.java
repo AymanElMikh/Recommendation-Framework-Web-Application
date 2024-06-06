@@ -1,5 +1,7 @@
 package recommendation.films.filmflix.filters;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.beans.factory.annotation.Autowired;
 import recommendation.films.filmflix.dao.MovieDao;
 import recommendation.films.filmflix.models.Movie;
@@ -7,7 +9,8 @@ import recommendation.films.filmflix.models.Movie;
 public class MinutesFilter implements Filter{
     private int minMinute;
     private int maxMinute;
-    public MinutesFilter(int minMinute, int maxMinute){
+    @JsonCreator
+    public MinutesFilter(@JsonProperty("minMinute") int minMinute, @JsonProperty("maxMinute") int maxMinute) {
         this.minMinute = minMinute;
         this.maxMinute = maxMinute;
     }

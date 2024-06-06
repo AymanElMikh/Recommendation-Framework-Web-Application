@@ -1,9 +1,10 @@
 package recommendation.films.filmflix.config;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
-@Component
+@Configuration
 public class SimilarityConfig {
     private final Environment environment;
     @Autowired

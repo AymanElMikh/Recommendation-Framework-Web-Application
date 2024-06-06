@@ -1,11 +1,14 @@
 package recommendation.films.filmflix.filters;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.beans.factory.annotation.Autowired;
 import recommendation.films.filmflix.dao.MovieDao;
 import recommendation.films.filmflix.models.Movie;
 
 public class GenreFilter implements Filter{
     private String genre;
-    public GenreFilter(String genre){
+    @JsonCreator
+    public GenreFilter(@JsonProperty("genre") String genre) {
         this.genre = genre;
     }
     @Override

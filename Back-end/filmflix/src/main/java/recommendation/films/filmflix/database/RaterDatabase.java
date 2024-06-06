@@ -8,7 +8,6 @@ import recommendation.films.filmflix.utils.duke.FileResource;
 
 import java.util.HashMap;
 import java.util.Map;
-
 public class RaterDatabase {
     private static RaterDatabase instance;
     private static HashMap<String, Rater> ourRaters;

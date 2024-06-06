@@ -1,8 +1,11 @@
 package recommendation.films.filmflix.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 
+
+@Configuration
 public class CSVDataConfig {
     private final Environment environment;
     @Autowired
