@@ -27,7 +27,6 @@ public class MovieController {
             List<MovieDTO> movies = movieService.getMovies(filterDTO, session);
             return ResponseEntity.ok(movies);
         } catch (Exception e) {
-            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("Something went wrong with the JSON file.");
         }
     }

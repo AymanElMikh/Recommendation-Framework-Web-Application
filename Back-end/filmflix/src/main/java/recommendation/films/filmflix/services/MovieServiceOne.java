@@ -19,7 +19,6 @@ import java.util.stream.Collectors;
 public class MovieServiceOne implements MovieService {
     private final MovieDao movieDao;
     private final RaterDao raterDao;
-
     @Autowired
     public MovieServiceOne(MovieDao movieDao, RaterDao raterDao) {
         this.movieDao = movieDao;
